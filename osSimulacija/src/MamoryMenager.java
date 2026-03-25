@@ -7,5 +7,4 @@ public class MamoryMenager {
         this.memory=new boolean[size];
     }
 
-
 }
