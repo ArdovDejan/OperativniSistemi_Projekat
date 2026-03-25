@@ -1,10 +1,12 @@
+import java.util.List;
+import java.util.TreeMap;
+
 public class MamoryMenager {
 
     private int totalSize;
-    private boolean[] memory;
+    private TreeMap<Integer, List<Integer>> freeBlocks;
     public MamoryMenager(int size) {
         this.totalSize = size;
-        this.memory=new boolean[size];
     }
 
 }
