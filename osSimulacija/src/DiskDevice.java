@@ -1,6 +1,6 @@
 
 
-public class DiskDevice {
+public class DiskDevice extends IODevice{
 
 
 }
