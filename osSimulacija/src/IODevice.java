@@ -1,6 +1,10 @@
 public abstract class IODevice {
-    private String name;
+    protected String name;
 
+
+    public IODevice(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -9,4 +13,15 @@ public abstract class IODevice {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void isBusy(){}
+
+    public void startOperation(PCB p,IOOperation op){
+
+
+    }
+
+
+
+
 }
