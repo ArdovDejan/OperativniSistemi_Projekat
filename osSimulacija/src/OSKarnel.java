@@ -6,7 +6,7 @@ public class OSKarnel {
     private ReadyQueue readyQueue;
     private BlockedQueue blockedQueue;
     private CPU cpu;
-    //private scheduler treab napraviti scheduler!
+    private Scheduler scheduler;
     private MemoryManager memoryManager;
     private FileSystem fileSystem;
     private IOMenager ioMenager;
