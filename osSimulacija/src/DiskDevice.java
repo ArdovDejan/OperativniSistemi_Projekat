@@ -5,7 +5,7 @@ public class DiskDevice extends IODevice{
 
     private List<DiskRequest> pendingRequests = new ArrayList<>();
     private int currentTrack;
-    private boolean busy= false;
+    private boolean busy  = false;
     private IOMenager ioMenager;
 
     public DiskDevice(String name, IOMenager ioMenager){
