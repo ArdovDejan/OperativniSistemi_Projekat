@@ -14,10 +14,11 @@ public class Directory extends FSNode {
 
     public void addChildNode(FSNode node) {
 
-        children.put(node.getName(),node);
-
-
+        children.put(node.getName(), node);
     }
+        public FSNode getChild(String name) {
+            return children.get(name);
+        }
     public List<FSNode> list(){
         return new ArrayList<FSNode>(children.values());
 
