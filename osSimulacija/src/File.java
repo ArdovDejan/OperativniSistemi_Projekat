@@ -24,6 +24,14 @@ public class File extends FSNode {
         this.content.append(data);
     }
 
-
+    public List<Integer> getBlockIndices() {
+        return blockIndices;
+    }
+    public void addBlockIndices(int index) {
+        this.blockIndices.add(index);
+    }
+    public int getSizeInBlocks(){
+        return blockIndices.size();
+    }
 
 }

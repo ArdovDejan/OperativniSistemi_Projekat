@@ -1,7 +1,7 @@
 public class MemorySegment {
-    public PCB owner;
-    public int base;
-    public int limit;
+    private PCB owner;
+    private int base;
+    private int limit;
 
 
 
