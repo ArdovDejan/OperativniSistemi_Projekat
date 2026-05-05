@@ -127,8 +127,34 @@ public class MemoryManager {
 
         }
 
+        int buddyAddress=address^size;
+        List<Integer> addressesOfSameSize = freeLists.get(size);
+
+        if (addressesOfSameSize != null && addressesOfSameSize.contains(buddyAddress)) {
+            addressesOfSameSize.remove(Integer.valueOf(buddyAddress));
+            int newBase=Math.min(address, buddyAddress);
+            coalesce(newBase,size*2); //rekurzivno spaja dalje
+
+        }else{
+            freeLists.computeIfAbsent(size, k -> new ArrayList<>()).add(address);
+        }
 
     }
+
+    public int read(PCB p, int address) {
+        if (address <= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
+            return ram.getCells()[address];
+
+
+        }else{
+            System.err.println("Segmentation Fault: Proces "+ p.getPid() + " pokusava da pristupi van granica.");
+            return -1;
+        }
+    }
+
+
+
+
 
 
 }
