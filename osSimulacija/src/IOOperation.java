@@ -2,11 +2,16 @@ public class IOOperation {
     private IOType type;
     private String data;
     private int duration;
+    private int address;
 
     public IOOperation(IOType type, String data, int duration) {
         this.type = type;
         this.data = data;
         this.duration = duration;
+    }
+
+    public int getAddress() {
+        return address;
     }
 
     public IOType getType() {

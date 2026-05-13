@@ -45,6 +45,6 @@ public class File extends FSNode {
     public int getSizeInBlock(){
         return blockIndices.size();
     }
-    
+
 
 }

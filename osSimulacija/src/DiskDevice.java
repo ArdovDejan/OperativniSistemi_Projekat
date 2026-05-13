@@ -28,7 +28,7 @@ public class DiskDevice extends IODevice{
 
 
         for(DiskRequest req: pendingRequests){
-            int distance = Math.abs(req.targetTrack - currentTrack);
+            int distance = Math.abs(req.track - currentTrack);
             if (distance < minDistance) {
                 minDistance = distance;
                 bestRequest = req;
@@ -37,20 +37,44 @@ public class DiskDevice extends IODevice{
         }
         if (bestRequest != null) {
             pendingRequests.remove(bestRequest);
-            currentTrack = bestRequest.targetTrack;
+            int targetTrack = bestRequest.track;
+            System.out.println("[Disk] Glava se pomjera sa " + currentTrack + " na " + targetTrack);
+
+            currentTrack = targetTrack;
+
+            final DiskRequest finalReq =bestRequest;
+            new Thread (()->{
+                try{
+                    Thread.sleep((finalReq.op.getDuration()));
+                    System.out.println("[Disk] Operacija završena na stazi " + finalReq.track);
+
+                    ioMenager.complitedIO(this,finalReq.p);
+                    processNextRequest();
+
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start() ;
 
 
-            //nije gotovo
         }
 
     }
-    
-    public void startOperation(IOOperation op,PCB p){
+
+    public void startOperation(IOOperation op,PCB p) throws IOException {
         pendingRequests.add(new DiskRequest(op,p));
+
+        System.out.println("[Disk] Primljen zahtjev za stazu " + op.getAddress() + " od procesa " + p.getPid());
 
         if(!busy){
 
+            try {
                 processNextRequest();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         }
 
