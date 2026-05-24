@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,7 @@ public class PCB {
     private int burstTime;//
     private int waitingTime;// Trebace mi zbog HRRN algoritma rasporedjivanja procesa
 
-    // TODO: dodati kada Milan implementira OpenFileHandle
-    // private List<OpenFileHandle> openFiles;
+    private List<OpenFileHandle> openFiles;
 
     public PCB(int pid, int priority, int burstTime) {
         this.pid = pid;
@@ -26,6 +26,7 @@ public class PCB {
         this.programCounter = 0;
         this.waitingTime = 0;
         this.registers = new HashMap<>();
+        this.openFiles = new ArrayList<>();
     }
 
     public int getPid() {
@@ -100,9 +101,25 @@ public class PCB {
         this.burstTime = burstTime;
     }
 
+    public List<OpenFileHandle> getOpenFiles() {
+        return openFiles;
+    }
+
+    public void addOpenFile(OpenFileHandle handle) {
+        openFiles.add(handle);
+    }
+
+    public void removeOpenFile(OpenFileHandle handle) {
+        openFiles.remove(handle);
+    }
+
     @Override
     public String toString() {
         return "PID: " + pid + " | State: " + state + " | Priority: " + priority + " | PC: " + programCounter;
+    }
+
+    public void incrementWaitingTime() {
+        this.waitingTime++;
     }
 
 }
