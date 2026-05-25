@@ -151,9 +151,19 @@ public class MemoryManager {
             return -1;
         }
     }
+public void write(PCB p, int address,int value) {
+        if (address <= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
+            ram.getCells()[address]=value;
+        } else {
+            System.err.println("Segmentation Fault: Proces " +p.getPid()+ " pokusava da pristupi van granica.");
+        }
 
 
+}
 
+public String dumpMemory() {
+    return "Zauzeti segmenti: "+segments.size() + ", Slobodni blokovi: " + freeLists.toString() ;
+}
 
 
 
