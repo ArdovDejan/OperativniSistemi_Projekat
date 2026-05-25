@@ -12,6 +12,9 @@ public class DiskDevice extends IODevice{
     public DiskDevice(String name, IOMenager ioMenager){
         super(name);
         this.ioMenager = ioMenager;
+        this.pendingRequests = new ArrayList<>();
+        this.currentTrack = 0;
+        this.busy = false;
 
     }
 

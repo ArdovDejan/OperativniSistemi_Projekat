@@ -23,24 +23,23 @@ public class FileSystem {
       return -1;
   }
   public void createFile(String path, String filename){
-        Directory targetDir=resolvePath(path);
+        FSNode targetNode= resolvePath(path);
 
-        if(targetDir!=null){
-            File newFile=new File(filename,targetDir);
-
+        if(targetNode instanceof Directory){
+            Directory targetDir= (Directory)targetNode;
+            File newFile=new File(filename,targetDir)  ;
             int blockIndex=findFreeBlock();
             if(blockIndex!=-1){
+
                 newFile.addBlockIndices(blockIndex);
                 targetDir.addChildNode(newFile);
-                System.out.println("Fajl "+ filename+ " kreiran i postavljen u blok "+blockIndex);
+                System.out.println("Fajl " + filename +" kreiran i postavljen u blok "+ blockIndex);
 
-
-            }else{
-                System.err.println("Greska: Nema slobodnog prostora na disku.");
+            } else {
+                System.err.println("Greska: Putanja nije direktorijum.");
             }
 
         }
-
 
   }
 

@@ -12,7 +12,6 @@ public class IOMenager {
         p.getState(ProcessState.READY);
 
         //nije gotovo
-        //dovrsiti posle
 
 }
 
