@@ -74,5 +74,47 @@ public FSNode resolvePath(String path){
 
 }
 
+public void delete(String path){
+      FSNode nodeToDelete= resolvePath(path);
+      if(nodeToDelete == null){
+          System.err.println("Greska: Putanja "+ path + " ne postoji.");
+          return;
+
+      }
+     if (nodeToDelete == root){
+         System.err.println("Greska: Ne mozete obrisati root direktorijum.");
+         return;
+     }
+
+     if(nodeToDelete instanceof File){
+         File file=(File)nodeToDelete;
+         for(Integer blockIdx : file.getBlockIndices()){
+             bitVector.clear(blockIdx);
+             System.out.println("[BitVector] Oslobodjen blok: " + blockIdx);
+
+         }
+
+     }
+     else if(nodeToDelete instanceof Directory){
+         Directory dir=(Directory)nodeToDelete;
+         if(!dir.list().isEmpty()){
+             System.out.println("Napomena: Brisanje nepoznatog direktorijuma ... ");
+         }
+
+     }
+
+     Directory parent= nodeToDelete.getParent();
+     if(parent!=null){
+        parent.removeChildNode(nodeToDelete.getName());
+         System.out.println("Uspjesno obrisano: " + nodeToDelete.getName());
+     }
+
+
+
+}
+
+
+
+
 
 }
