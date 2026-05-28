@@ -23,7 +23,7 @@ public class Directory extends FSNode {
         return new ArrayList<FSNode>(children.values());
 
     }
-    public void removeChildNode(FSNode node) {
+    public void removeChildNode(String node) {
         this.children.remove(name);
     }
 

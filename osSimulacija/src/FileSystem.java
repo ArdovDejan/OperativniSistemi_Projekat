@@ -36,9 +36,12 @@ public class FileSystem {
                 System.out.println("Fajl " + filename +" kreiran i postavljen u blok "+ blockIndex);
 
             } else {
-                System.err.println("Greska: Putanja nije direktorijum.");
+                System.err.println("Greska: Nema slobodnog prostora na disku.");
+
             }
 
+        }else{
+            System.err.println("Greska: Putanja nije direktorijum.");
         }
 
   }
