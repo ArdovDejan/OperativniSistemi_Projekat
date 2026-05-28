@@ -114,7 +114,16 @@ public void delete(String path){
 }
 
 
+    public OpenFileHandle openFile(String path){
+      FSNode node=resolvePath(path);
+      if(node instanceof File){
+          System.out.println("Fajl "+node.getName() + " je uspjesno otvoren." );
+          return new OpenFileHandle((File)node);
+      }
+        System.err.println("Greska: Fajl nije pronadjen u putanji");
+      return null;
 
+    }
 
 
 }

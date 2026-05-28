@@ -13,10 +13,11 @@ public class PCB {
     private int baseAddress;
     private int limit;
 
+
     private int burstTime;//
     private int waitingTime;// Trebace mi zbog HRRN algoritma rasporedjivanja procesa
 
-    private List<OpenFileHandle> openFiles;
+    private List<OpenFileHandle> openFiles= new ArrayList<>();
 
     public PCB(int pid, int priority, int burstTime) {
         this.pid = pid;
@@ -121,5 +122,10 @@ public class PCB {
     public void incrementWaitingTime() {
         this.waitingTime++;
     }
+
+    public void addFileHandle(OpenFileHandle handle) {
+        openFiles.add(handle);
+    }
+
 
 }

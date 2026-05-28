@@ -23,5 +23,18 @@ public class OpenFileHandle {
         cursor += data.length();
     }
 
+    public void seek(int position){
+        if(position >= 0 && position <= file.read().length()){
+            this.cursor = position;
+        }
 
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public int getCursor() {
+        return cursor;
+    }
 }
