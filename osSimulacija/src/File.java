@@ -24,7 +24,7 @@ public class File extends FSNode {
         this.content.append(data);
     }
 
-    
+
 
     public int getSizeInBlocks(){
         return blockIndices.size();
