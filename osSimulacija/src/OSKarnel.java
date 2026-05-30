@@ -59,6 +59,10 @@ public void createProcess(int priority, int burstTime){
 
 }
 
-
+public void unblockProcess(PCB p){
+     blockedQueue.unblock(p);
+     readyQueue.add(p);
+    System.out.println("[Karnel] Proces "+p.getPid()+" vracen u ReadyQueue.");
+}
 
 }

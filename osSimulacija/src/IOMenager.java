@@ -6,7 +6,7 @@ public class IOMenager {
     private OSKarnel karnel;
 
     public IOMenager(OSKarnel osKarnel) {
-        this.karnel=osKarnel;
+        this.karnel=karnel;
         this.devices=new ArrayList<>();
     }
 
@@ -16,11 +16,15 @@ public class IOMenager {
 
         p.setState(ProcessState.READY);
 
-        //nije gotovo
+        if(karnel != null){
+            karnel.unblockProcess(p);
+        }
 
 }
 
 
-
+public String getName(){
+        return "Glavni IO Menager";
+}
 
 }
