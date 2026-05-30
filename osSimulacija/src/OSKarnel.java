@@ -45,4 +45,20 @@ public void boot(){
 
 }
 
+public void createProcess(int priority, int burstTime){
+     PCB  newProcess = new PCB(nextPid++,priority,burstTime);
+
+     if(memoryManager.allocate(newProcess,64)){
+         newProcess.setState(ProcessState.READY);
+         processTable.add(newProcess);
+         readyQueue.add(newProcess);
+         System.out.println("[Karnel] Kreiran proces PID: " + newProcess.getPid());
+     }else{
+         System.out.println("[Karnel] Neuspjesna alokacija memorije za novi proces.");
+     }
+
+}
+
+
+
 }
