@@ -31,7 +31,7 @@ public class FileSystem {
             int blockIndex=findFreeBlock();
             if(blockIndex!=-1){
 
-                newFile.addBlockIndices(blockIndex);
+                newFile.addBlocksIndices(blockIndex);
                 targetDir.addChildNode(newFile);
                 System.out.println("Fajl " + filename +" kreiran i postavljen u blok "+ blockIndex);
 
@@ -91,7 +91,7 @@ public void delete(String path){
 
      if(nodeToDelete instanceof File){
          File file=(File)nodeToDelete;
-         for(Integer blockIdx : file.getBlockIndices()){
+         for(Integer blockIdx : file.getBlocksIndices()){
              bitVector.clear(blockIdx);
              System.out.println("[BitVector] Oslobodjen blok: " + blockIdx);
 

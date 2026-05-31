@@ -65,4 +65,25 @@ public void unblockProcess(PCB p){
     System.out.println("[Karnel] Proces "+p.getPid()+" vracen u ReadyQueue.");
 }
 
+
+
+public void runOneStep(){
+     if(cpu.getCurrent()==null|| cpu.getCurrent().getState()!=ProcessState.TERMINATED){
+         PCB next=scheduler.chooseNext(readyQueue);
+         if(next != null){
+             cpu.contextSwitch(next);
+             System.out.println("[Karnel] CPU preuzeo proces "+ next.getPid());
+         }else{
+             System.out.println("[Karnel] Nema peocesa u ReadyQueue.");
+             return;
+         }
+
+     }
+    cpu.executeOneStep();
+
+     for(PCB p: readyQueue.getQueue()){
+         p.setWaitingTime(p.getWaitingTime() + 1);
+     }
+
+}
 }
