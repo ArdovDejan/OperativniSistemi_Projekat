@@ -12,6 +12,8 @@ public class OSKarnel {
     private FileSystem fileSystem;
     private IOMenager ioMenager;
     private int nextPid;
+    private int quantumCounter=0;
+
 
  public OSKarnel() {
      this.processTable = new ArrayList<>();
@@ -67,23 +69,44 @@ public void unblockProcess(PCB p){
 
 
 
-public void runOneStep(){
-     if(cpu.getCurrent()==null|| cpu.getCurrent().getState()!=ProcessState.TERMINATED){
-         PCB next=scheduler.chooseNext(readyQueue);
-         if(next != null){
-             cpu.contextSwitch(next);
-             System.out.println("[Karnel] CPU preuzeo proces "+ next.getPid());
-         }else{
-             System.out.println("[Karnel] Nema peocesa u ReadyQueue.");
-             return;
-         }
+public void runOneStep() {
+    PCB current = cpu.getCurrent();
 
-     }
-    cpu.executeOneStep();
+    if (current != null) {
+        cpu.executeOneStep();
+        quantumCounter++;
+        System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: "+current.getProgramCounter()+", Kvant: "+quantumCounter);
+    if(current.getState()==ProcessState.TERMINATED){
+        System.out.println("[Karnel] Proces "+ current.getPid()+" je zavrsio rad.");
+        memoryManager.free(current);
+        cpu.contextSwitch(null);
+        quantumCounter=0;
+    }else if(quantumCounter>=((HRRNScheduler)scheduler).getTimeQuantum()){
+        System.out.println("[Karnel] Procesu " + current.getPid()+" je istekao kvant vremena. Prekidam ga.");
+        current.setState(ProcessState.READY);
+        readyQueue.add(current);
+        cpu.contextSwitch(null);
+        quantumCounter=0;
 
-     for(PCB p: readyQueue.getQueue()){
-         p.setWaitingTime(p.getWaitingTime() + 1);
-     }
+    }
+    }
+    if(cpu.getCurrent()==null){
+        PCB next=scheduler.chooseNext(readyQueue)   ;
+        if(next!=null){
+            readyQueue.getQueue().remove(next);
+            cpu.contextSwitch(next);
+            quantumCounter=0;
+            System.out.println("[Karnel] Cpu je preuzeo proces "+ next.getPid()+" (Preostalo Burst: "+next.getBurstTime()+")");
+
+        }else {
+            System.out.println("[Karnel] Nema procesa u ReadyQueue.");
+        }
+    }
+
+    for(PCB p: readyQueue.getQueue()){
+        p.incrementWaitingTime();
+    }
+
 
 }
 }
