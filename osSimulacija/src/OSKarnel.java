@@ -76,7 +76,17 @@ public void runOneStep() {
         cpu.executeOneStep();
         quantumCounter++;
         System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: "+current.getProgramCounter()+", Kvant: "+quantumCounter);
-    if(current.getState()==ProcessState.TERMINATED){
+
+        if(current.getPid() == 1 && current.getProgramCounter()==7){
+            handleSyscall(current,"IO_REQUEST");
+            return ;
+
+        }
+
+
+
+
+        if(current.getState()==ProcessState.TERMINATED){
         System.out.println("[Karnel] Proces "+ current.getPid()+" je zavrsio rad.");
         memoryManager.free(current);
         cpu.contextSwitch(null);
@@ -109,4 +119,18 @@ public void runOneStep() {
 
 
 }
+
+public void handleSyscall(PCB p, String syscallType){
+    System.out.println("\n[Sistemski poziv] Proces "+ p.getPid()+" je zatrazio: " + syscallType);
+
+    if(syscallType.equals("IO_REQUEST")){
+        System.out.println("[Karnel] Blokiran proces "+ p.getPid()+" i saljem ga na I/O uredjaj.");
+
+        cpu.contextSwitch(null);
+        quantumCounter=0;
+    }
+
+}
+
+
 }
