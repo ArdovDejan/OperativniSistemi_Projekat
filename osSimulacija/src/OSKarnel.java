@@ -61,6 +61,21 @@ public void createProcess(int priority, int burstTime){
 
 }
 
+
+    public void terminateProcess(int pid) {
+        for (PCB p : processTable) {
+            if (p.getPid() == pid) {
+                p.setState(ProcessState.TERMINATED);
+                memoryManager.free(p);
+                processTable.remove(p);
+                System.out.println("[Karnel] Proces " + pid + " ugašen.");
+                return;
+            }
+        }
+        System.out.println("[Karnel] Proces " + pid + " nije pronađen.");
+    }
+
+
 public void unblockProcess(PCB p){
      blockedQueue.unblock(p);
      readyQueue.add(p);
