@@ -30,11 +30,11 @@ public class File extends FSNode {
         return blockIndices.size();
     }
 
-    public List<Integer> getBlocksIndices(){
+    public List<Integer> getBlockIndices(){
         return blockIndices;
     }
 
-    public void addBlocksIndices(int index){
+    public void addBlockIndices(int index){
         this.blockIndices.add(index);
     }
 

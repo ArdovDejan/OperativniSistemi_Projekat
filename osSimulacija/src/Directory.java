@@ -24,7 +24,7 @@ public class Directory extends FSNode {
 
     }
     public void removeChildNode(String node) {
-        this.children.remove(name);
+        this.children.remove(node);
     }
 
 }

@@ -6,7 +6,7 @@ public class IOMenager {
     private OSKarnel karnel;
 
     public IOMenager(OSKarnel osKarnel) {
-        this.karnel=karnel;
+        this.karnel=osKarnel;
         this.devices=new ArrayList<>();
     }
 

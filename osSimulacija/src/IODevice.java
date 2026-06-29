@@ -14,7 +14,10 @@ public abstract class IODevice {
         this.name = name;
     }
 
-    public void isBusy(){}
+    public boolean isBusy(){
+        return false;
+
+    }
 
     public void startOperation(PCB p,IOOperation op){
 

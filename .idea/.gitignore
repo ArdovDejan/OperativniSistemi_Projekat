@@ -1,5 +1,8 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
+# IntelliJ IDEA fajlovi
+.idea/
+*.iml
+
+# Build output
+out/
+target/
+*.class
