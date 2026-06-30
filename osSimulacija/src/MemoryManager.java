@@ -142,7 +142,7 @@ public class MemoryManager {
     }
 
     public int read(PCB p, int address) {
-        if (address <= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
+        if (address >= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
             return ram.getCells()[address];
 
 
@@ -152,7 +152,7 @@ public class MemoryManager {
         }
     }
 public void write(PCB p, int address,int value) {
-        if (address <= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
+        if (address >= p.getBaseAddress() && address < p.getBaseAddress()+p.getLimit()) {
             ram.getCells()[address]=value;
         } else {
             System.err.println("Segmentation Fault: Proces " +p.getPid()+ " pokusava da pristupi van granica.");

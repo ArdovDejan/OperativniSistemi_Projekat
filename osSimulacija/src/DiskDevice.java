@@ -6,7 +6,7 @@ public class DiskDevice extends IODevice{
 
     private List<DiskRequest> pendingRequests = new ArrayList<>();
     private int currentTrack;
-    private boolean busy  = false;
+    private boolean busy;
     private IOMenager ioMenager;
 
     public DiskDevice(String name, IOMenager ioMenager){
@@ -18,6 +18,10 @@ public class DiskDevice extends IODevice{
 
     }
 
+    @Override
+    public boolean isBusy(){
+        return this.busy;
+    }
     private void processNextRequest() throws IOException {
         if(pendingRequests.isEmpty()){
             busy = false;
@@ -65,6 +69,8 @@ public class DiskDevice extends IODevice{
         }
 
     }
+
+
 
     public void startOperation(IOOperation op,PCB p) throws IOException {
         pendingRequests.add(new DiskRequest(op,p));

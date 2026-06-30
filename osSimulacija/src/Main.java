@@ -17,9 +17,11 @@ public class Main {
                 System.out.println("\n[Hardver] Disk je zavrsio citanje podataka za Proces 1.");
             }
 
-            
+
             os.runOneStep();
-            try{Thread.sleep(500);}catch(InterruptedException e){}
+            try{Thread.sleep(500);}catch(InterruptedException e){
+                System.out.println(e.getMessage());
+            }
 
         }
 
