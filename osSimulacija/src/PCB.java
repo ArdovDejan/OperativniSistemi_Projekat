@@ -13,6 +13,8 @@ public class PCB {
     private int baseAddress;
     private int limit;
 
+    private IODevice waitingForDevice;
+
 
     private int burstTime;//
     private int waitingTime;// Trebace mi zbog HRRN algoritma rasporedjivanja procesa
@@ -28,6 +30,14 @@ public class PCB {
         this.waitingTime = 0;
         this.registers = new HashMap<>();
         this.openFiles = new ArrayList<>();
+    }
+
+    public IODevice getWaitingForDevice() {
+        return waitingForDevice;
+    }
+
+    public void setWaitingForDevice(IODevice device) {
+        this.waitingForDevice = device;
     }
 
     public int getPid() {

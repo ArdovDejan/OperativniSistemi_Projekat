@@ -4,7 +4,7 @@ import java.util.List;
 public class BlockedQueue {
     private List<PCB> list;
 
-    public BlockedQueue(List<PCB> list) {
+    public BlockedQueue() {
         this.list = new LinkedList<>();
     }
 
@@ -18,7 +18,15 @@ public class BlockedQueue {
         p.setState(ProcessState.READY);
     }
 
-    //private List<PCB> findByDevice(IODevice d){}  TODO: Implementirati poslje konsultacije sa kolegom Milanom
+    private List<PCB> findByDevice(IODevice d){
+        List<PCB> result = new LinkedList<>();
+        for (PCB p : list) {
+            if (p.getWaitingForDevice() == d) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
 
     public List<PCB> getList() {
         return list;

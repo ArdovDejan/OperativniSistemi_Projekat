@@ -36,7 +36,7 @@ public void boot(){
     System.out.println("[Sistem] File sistem montiran.");
 
     this.readyQueue=new ReadyQueue();
-    this.blockedQueue = new BlockedQueue(new ArrayList<>());
+    this.blockedQueue = new BlockedQueue();
     this.scheduler=new HRRNScheduler(5);
 
     this.cpu=new CPU();
