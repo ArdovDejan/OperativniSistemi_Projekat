@@ -5,6 +5,10 @@ public class Main {
         OSKarnel os=new OSKarnel();
         os.boot();
 
+        Shell shell=new Shell(os);
+        shell.start();
+
+/**
         System.out.println("--- Kreiranje procesa ---");
         os.createProcess(1,10);
         os.createProcess(2,5);
@@ -23,7 +27,7 @@ public class Main {
                 System.out.println(e.getMessage());
             }
 
-        }
+        }*/
 
 
 

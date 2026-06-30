@@ -147,5 +147,11 @@ public void handleSyscall(PCB p, String syscallType){
 
 }
 
+    public List<PCB> getProcessTable() {
+        return processTable;
+    }
 
+    public MemoryManager getMemoryManager() {
+        return memoryManager;
+    }
 }
