@@ -82,9 +82,11 @@ public void unblockProcess(PCB p){
     System.out.println("[Karnel] Proces "+p.getPid()+" vracen u ReadyQueue.");
 }
 
+    public FileSystem getFileSystem() {
+        return fileSystem;
+    }
 
-
-public void runOneStep() {
+    public void runOneStep() {
     PCB current = cpu.getCurrent();
 
     if (current != null) {
