@@ -55,7 +55,7 @@ public class DiskDevice extends IODevice{
                     Thread.sleep((finalReq.op.getDuration()));
                     System.out.println("[Disk] Operacija završena na stazi " + finalReq.track);
 
-                    ioMenager.complitedIO(this,finalReq.p);
+                    ioMenager.completeIO(this,finalReq.p);
                     processNextRequest();
 
                 }catch (InterruptedException e){
@@ -72,7 +72,7 @@ public class DiskDevice extends IODevice{
 
 
 
-    public void startOperation(IOOperation op,PCB p) throws IOException {
+    public void startOperation(PCB p,IOOperation op) throws IOException {
         pendingRequests.add(new DiskRequest(op,p));
 
         System.out.println("[Disk] Primljen zahtjev za stazu " + op.getAddress() + " od procesa " + p.getPid());

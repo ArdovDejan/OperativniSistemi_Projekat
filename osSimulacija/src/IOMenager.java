@@ -11,7 +11,7 @@ public class IOMenager {
     }
 
 
-    public void complitedIO(IODevice device, PCB p) {
+    public void completeIO(IODevice device, PCB p) {
         System.out.println("[IOMenager] Uredjaj " + device.getName() + " je zavrsio operaciju za proces " + p.getPid());
 
         p.setState(ProcessState.READY);

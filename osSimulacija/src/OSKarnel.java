@@ -135,15 +135,12 @@ public void runOneStep() {
 
 }
 
-public void handleSyscall(PCB p, String syscallType){
-    System.out.println("\n[Sistemski poziv] Proces "+ p.getPid()+" je zatrazio: " + syscallType);
+public void handleSyscall(Syscall req){
+    PCB p=cpu.getCurrent();
+    if(p == null)return;
 
-    if(syscallType.equals("IO_REQUEST")){
-        System.out.println("[Karnel] Blokiran proces "+ p.getPid()+" i saljem ga na I/O uredjaj.");
+    //dovrsiti 
 
-        cpu.contextSwitch(null);
-        quantumCounter=0;
-    }
 
 }
 
