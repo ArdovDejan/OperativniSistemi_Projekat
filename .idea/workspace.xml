@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf9e4e1a-1830-4f51-9e9f-927bb1644a29" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/osSimulacija/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/osSimulacija/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/Directory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/FSNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/File.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/OpenFileHandle.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/PCB.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/ProcessState.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OperativniSistemi_Projekat/ReadyQueue.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/osSimulacija/src/DiskDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/osSimulacija/src/DiskDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/osSimulacija/src/IODevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/osSimulacija/src/IODevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/osSimulacija/src/IOMenager.java" beforeDir="false" afterPath="$PROJECT_DIR$/osSimulacija/src/IOMenager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/osSimulacija/src/OSKarnel.java" beforeDir="false" afterPath="$PROJECT_DIR$/osSimulacija/src/OSKarnel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

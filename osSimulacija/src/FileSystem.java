@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.BitSet;
 
 public class FileSystem {
@@ -22,6 +23,19 @@ public class FileSystem {
       }
       return -1;
   }
+
+  public Directory createDirectory(String path,String name){
+      FSNode parent=resolvePath(path);
+      if(parent instanceof Directory){
+          Directory newDir= new Directory(name,(Directory) parent);
+          ((Directory)parent).addChildNode(newDir);
+          return newDir;
+      }
+      return null;
+
+  } 
+
+
   public void createFile(String path, String filename){
         FSNode targetNode= resolvePath(path);
 

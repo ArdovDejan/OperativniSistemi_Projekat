@@ -93,7 +93,7 @@ public void runOneStep() {
         System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: "+current.getProgramCounter()+", Kvant: "+quantumCounter);
 
         if(current.getPid() == 1 && current.getProgramCounter()==7){
-            handleSyscall(current,"IO_REQUEST");
+           // handleSyscall(current,"IO_REQUEST");
             return ;
 
         }
@@ -139,7 +139,7 @@ public void handleSyscall(Syscall req){
     PCB p=cpu.getCurrent();
     if(p == null)return;
 
-    //dovrsiti 
+    //dovrsiti
 
 
 }

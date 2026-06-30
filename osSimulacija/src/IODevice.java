@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public abstract class IODevice {
     protected String name;
 
@@ -19,7 +21,7 @@ public abstract class IODevice {
 
     }
 
-    public void startOperation(PCB p,IOOperation op){
+    public void startOperation(PCB p,IOOperation op) throws IOException {
 
 
     }
