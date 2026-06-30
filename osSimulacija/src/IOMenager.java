@@ -16,17 +16,9 @@ public class IOMenager {
 
     }
 
-    public void completeIO(IODevice device, PCB p) {
-        System.out.println("[IOMenager] Uredjaj " + device.getName() + " je zavrsio operaciju za proces " + p.getPid());
-
-        p.setState(ProcessState.READY);
-
-        if(karnel != null){
-            karnel.unblockProcess(p);
-        }
-
-}
-
+    public void complitedIO(IODevice device) {
+        karnel.handleIOCompletion(device);
+    }
 
 public String getName(){
         return "Glavni IO Menager";

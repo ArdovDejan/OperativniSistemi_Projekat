@@ -146,6 +146,18 @@ public void handleSyscall(Syscall req){
 
 }
 
+    public void handleIOCompletion(IODevice device) {
+        System.out.println("[Karnel] Uredjaj " + device.getName() + " zavrsio I/O operaciju.");
+
+        List<PCB> procesi = BlockedQueue.findByDevice(device);
+
+        for (PCB p : procesi) {
+            blockedQueue.unblock(p);
+            readyQueue.add(p);
+            System.out.println("[Karnel] Proces " + p.getPid() + " odblokiran i vraca se u ReadyQueue.");
+        }
+    }
+
     public List<PCB> getProcessTable() {
         return processTable;
     }
