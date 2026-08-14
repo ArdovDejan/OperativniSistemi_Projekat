@@ -36,7 +36,7 @@ public class IOMenager {
     }
 
 
-    public void complitedIO(IODevice device) {
+    public void completeIO(IODevice device) {
         karnel.handleIOCompletion(device);
     }
 

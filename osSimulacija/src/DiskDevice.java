@@ -55,7 +55,7 @@ public class DiskDevice extends IODevice{
                     Thread.sleep((finalReq.op.getDuration()));
                     System.out.println("[Disk] Operacija završena na stazi " + finalReq.track);
 
-                    ioMenager.completeIO(this,finalReq.p);
+                    ioMenager.completeIO(finalReq.p.getWaitingForDevice());
                     processNextRequest();
 
                 }catch (InterruptedException e){
