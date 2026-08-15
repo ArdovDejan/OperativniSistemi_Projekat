@@ -149,7 +149,7 @@ public void handleSyscall(Syscall req){
     public void handleIOCompletion(IODevice device) {
         System.out.println("[Karnel] Uredjaj " + device.getName() + " zavrsio I/O operaciju.");
 
-        List<PCB> procesi = BlockedQueue.findByDevice(device);
+        List<PCB> procesi = blockedQueue.findByDevice(device);
 
         for (PCB p : procesi) {
             blockedQueue.unblock(p);

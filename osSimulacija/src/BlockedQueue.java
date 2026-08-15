@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BlockedQueue {
-    private static List<PCB> list;
+    private List<PCB> list;
 
     public BlockedQueue() {
         this.list = new LinkedList<>();
@@ -18,7 +18,7 @@ public class BlockedQueue {
         p.setState(ProcessState.READY);
     }
 
-    public static List<PCB> findByDevice(IODevice d){
+    public List<PCB> findByDevice(IODevice d){
         List<PCB> result = new LinkedList<>();
         for (PCB p : list) {
             if (p.getWaitingForDevice() == d) {
