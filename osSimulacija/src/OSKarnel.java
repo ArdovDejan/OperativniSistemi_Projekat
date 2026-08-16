@@ -47,7 +47,7 @@ public void boot(){
 
 }
 
-public void createProcess(int priority, int burstTime){
+    public void createProcess(int priority, int burstTime){
      PCB  newProcess = new PCB(nextPid++,priority,burstTime);
 
      if(memoryManager.allocate(newProcess,64)){
@@ -59,7 +59,7 @@ public void createProcess(int priority, int burstTime){
          System.out.println("[Karnel] Neuspjesna alokacija memorije za novi proces.");
      }
 
-}
+    }
 
 
     public void terminateProcess(int pid) {
@@ -76,75 +76,113 @@ public void createProcess(int priority, int burstTime){
     }
 
 
-public void unblockProcess(PCB p){
+    public void unblockProcess(PCB p){
      blockedQueue.unblock(p);
      readyQueue.add(p);
     System.out.println("[Karnel] Proces "+p.getPid()+" vracen u ReadyQueue.");
-}
+    }
 
     public FileSystem getFileSystem() {
         return fileSystem;
     }
 
-    public void runOneStep() {
-    PCB current = cpu.getCurrent();
 
-    if (current != null) {
-        cpu.executeOneStep();
-        quantumCounter++;
-        System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: "+current.getProgramCounter()+", Kvant: "+quantumCounter);
+    public void timerTick(){
+     PCB current=cpu.getCurrent();
 
-        if(current.getPid() == 1 && current.getProgramCounter()==7){
-           // handleSyscall(current,"IO_REQUEST");
-            return ;
+     if(current==null){
+         dodjeliSledeciProces();
+         increaseWaitingTime();
+         return;
+     }
 
-        }
+     cpu.executeOneStep();
+     quantumCounter++;
+     System.out.println("[CPU] Proces " + current.getPid() + "izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
 
+     if(current.getState()==ProcessState.TERMINATED){
+         System.out.println("[Karnel] Proces " + current.getPid() + " je zavrsio rad.");
+         memoryManager.free(current);
+         processTable.remove(current);
+         cpu.contextSwitch(null);
+         quantumCounter = 0;
+         increaseWaitingTime();
+         return;
+     }
 
-
-
-        if(current.getState()==ProcessState.TERMINATED){
-        System.out.println("[Karnel] Proces "+ current.getPid()+" je zavrsio rad.");
-        memoryManager.free(current);
-        cpu.contextSwitch(null);
-        quantumCounter=0;
-    }else if(quantumCounter>=((HRRNScheduler)scheduler).getTimeQuantum()){
-        System.out.println("[Karnel] Procesu " + current.getPid()+" je istekao kvant vremena. Prekidam ga.");
-        current.setState(ProcessState.READY);
-        readyQueue.add(current);
-        cpu.contextSwitch(null);
-        quantumCounter=0;
-
-    }
-    }
-    if(cpu.getCurrent()==null){
-        PCB next=scheduler.chooseNext(readyQueue)   ;
-        if(next!=null){
-            readyQueue.getQueue().remove(next);
-            cpu.contextSwitch(next);
-            quantumCounter=0;
-            System.out.println("[Karnel] Cpu je preuzeo proces "+ next.getPid()+" (Preostalo Burst: "+next.getBurstTime()+")");
-
-        }else {
-            System.out.println("[Karnel] Nema procesa u ReadyQueue.");
-        }
+     if (quantumCounter >= ((HRRNScheduler) scheduler).getTimeQuantum()){
+         System.out.println("[Karnel] Proces " + current.getPid() + " je istekao kvant vrijeme");
+         readyQueue.add(current);
+         cpu.contextSwitch(null);
+         quantumCounter = 0;
+     }
+        increaseWaitingTime();
     }
 
-    for(PCB p: readyQueue.getQueue()){
-        p.incrementWaitingTime();
+    private void dodjeliSledeciProces(){
+     PCB next = scheduler.chooseNext(readyQueue);
+     if(next != null){
+         readyQueue.getQueue().remove(next);
+         cpu.contextSwitch(next);
+         quantumCounter = 0;
+         System.out.println("[Karnel] CPU preuzeo proces " + next.getPid());
+     }else
+         System.out.println("[Karnel] Nema procesa u ReadyQueue");
+    }
+
+    private void increaseWaitingTime(){
+     for (PCB p : readyQueue.getQueue())
+         p.incrementWaitingTime();
     }
 
 
-}
+    public void syscall(Syscall request) {
+     PCB current = cpu.getCurrent();
+     if(current==null)
+         return;
 
-public void handleSyscall(Syscall req){
-    PCB p=cpu.getCurrent();
-    if(p == null)return;
+     System.out.println("[Sistemski poziv] Proces " + current.getPid() + " zatrazio: " + request.getType());
 
-    //dovrsiti
+     switch (request.getType()){
+         case EXIT:
+             terminateProcess(current.getPid());
+             cpu.contextSwitch(null);
+             quantumCounter = 0;
+             break;
+         case SLEEP:
+             blockedQueue.block(current);
+             cpu.contextSwitch(null);
+             quantumCounter = 0;
+             break;
+         case YIELD:
+             readyQueue.add(current);
+             cpu.contextSwitch(null);
+             quantumCounter = 0;
+             break;
+         case READ:
+         case WRITE:
+         case OPEN:
+             System.out.println("[Karnel] Proces " + current.getPid() + " blokiran zbog I/O (" + request.getType() + ").");
+             blockedQueue.block(current);
+             cpu.contextSwitch(null);
+             quantumCounter = 0;
+             break;
+         case CREATE_PROCESS:
+             if (request.getArgs().size() >= 2) {
+                 int priority = Integer.parseInt(request.getArgs().get(0));
+                 int burstTime = Integer.parseInt(request.getArgs().get(1));
+                 createProcess(priority, burstTime);
+             } else {
+                 createProcess(current.getPriority(), 10); //10 defolt vrijednost ako nema argumenata
+             }
+             break;
+         default:
+             System.out.println("[Karnel] Nepoznat syscall.");
+             break;
+     }
 
+    }
 
-}
 
     public void handleIOCompletion(IODevice device) {
         System.out.println("[Karnel] Uredjaj " + device.getName() + " zavrsio I/O operaciju.");
