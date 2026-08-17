@@ -13,14 +13,16 @@ public class OSKarnel {
     private IOMenager ioMenager;
     private int nextPid;
     private int quantumCounter=0;
+    private Thread cpuThread;
+    private boolean cpuRunning;
+    private int runningQuantum;
 
-
- public OSKarnel() {
+    public OSKarnel() {
      this.processTable = new ArrayList<>();
      this.nextPid=1;
- }
+    }
 
-public void boot(){
+    public void boot(){
     System.out.println("--- [Sistem] Pokretanje OS Simulatora ---");
 
     RAM ram=new RAM(1024,new int[1024]);
@@ -43,9 +45,36 @@ public void boot(){
     System.out.println("[Sistem] CPU spreman.");
     System.out.println("--- [Sistem] Boot proces zavrsen uspjesno. ---");
 
+    startCpuLoop();
 
+    }
 
-}
+    public void  startCpuLoop(){
+        cpuRunning = true;
+        cpuThread = new Thread(() -> {
+            while (cpuRunning){
+                timerTick();
+                try {
+                    Thread.sleep(runningQuantum);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        cpuThread.start();
+        System.out.println("[Sistem] CPU loop pokrenut (" + runningQuantum + "ms po ciklusu).");
+    }
+
+    public void stopCpuLoop(){
+        cpuRunning = false;
+        if(cpuThread != null) {
+            cpuThread.interrupt();
+        }
+    }
+
+    public void setRunningQuantum(int runningQuantum) {
+        this.runningQuantum = runningQuantum;
+    }
 
     public void createProcess(int priority, int burstTime){
      PCB  newProcess = new PCB(nextPid++,priority,burstTime);

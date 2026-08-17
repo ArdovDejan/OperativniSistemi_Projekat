@@ -73,6 +73,7 @@ public class Shell {
 
     private void commandExit() {
         System.out.println("Gasim OS...");
+        osKarnel.stopCpuLoop();
         running = false;
     }
 
