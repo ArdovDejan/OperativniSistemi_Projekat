@@ -127,7 +127,7 @@ public class OSKarnel {
 
      cpu.executeOneStep();
      quantumCounter++;
-     System.out.println("[CPU] Proces " + current.getPid() + "izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
+     System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
 
      if(current.getState()==ProcessState.TERMINATED){
          System.out.println("[Karnel] Proces " + current.getPid() + " je zavrsio rad.");
@@ -155,8 +155,8 @@ public class OSKarnel {
          cpu.contextSwitch(next);
          quantumCounter = 0;
          System.out.println("[Karnel] CPU preuzeo proces " + next.getPid());
-     }else
-         System.out.println("[Karnel] Nema procesa u ReadyQueue");
+     }//else
+         //System.out.println("[Karnel] Nema procesa u ReadyQueue");
     }
 
     private void increaseWaitingTime(){

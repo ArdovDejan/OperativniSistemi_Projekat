@@ -1,39 +1,21 @@
-public class Main {
-    static void main(String[] args) {
+public static void main(String[] args) throws InterruptedException {
+    OSKarnel os = new OSKarnel();
+    os.setRunningQuantum(500);
+    os.boot();
+
+    os.createProcess(1, 20);
+    os.createProcess(1, 10);
+    os.createProcess(1, 3);
 
 
-        OSKarnel os=new OSKarnel();
-        os.boot();
-
-        Shell shell=new Shell(os);
-        shell.start();
-
-/**
-        System.out.println("--- Kreiranje procesa ---");
-        os.createProcess(1,10);
-        os.createProcess(2,5);
-
-        System.out.println("\n ---- Pocetak simulacije rada cpu-a --- ");
-
-        for (int i = 0; i < 15; i++) {
-
-            if(i==12){
-                System.out.println("\n[Hardver] Disk je zavrsio citanje podataka za Proces 1.");
-            }
+    Thread.sleep(10000);
 
 
-            os.runOneStep();
-            try{Thread.sleep(500);}catch(InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-
-        }*/
-
-
-
-
-
-
-
+    System.out.println("\n--- Stanje procesa ---");
+    for (PCB p : os.getProcessTable()) {
+        System.out.println(p);
     }
+
+    Shell shell = new Shell(os);
+    shell.start();
 }
