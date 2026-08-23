@@ -41,7 +41,7 @@ public class OSKarnel {
     this.blockedQueue = new BlockedQueue();
     this.scheduler=new HRRNScheduler(5);
 
-    this.cpu=new CPU();
+    this.cpu=new CPU(memoryManager);
     System.out.println("[Sistem] CPU spreman.");
     System.out.println("--- [Sistem] Boot proces zavrsen uspjesno. ---");
 
@@ -88,6 +88,20 @@ public class OSKarnel {
          System.out.println("[Karnel] Neuspjesna alokacija memorije za novi proces.");
      }
 
+    }
+
+    public int createProcess(int priority, List<String> instrukcije) {
+        PCB newProcess = new PCB(nextPid++, priority, instrukcije.size());
+        newProcess.setInstructions(instrukcije);
+
+        if (memoryManager.allocate(newProcess, 64)) {
+            newProcess.setState(ProcessState.READY);
+            processTable.add(newProcess);
+            readyQueue.add(newProcess);
+            System.out.println("[Karnel] Kreiran proces PID: " + newProcess.getPid());
+            return newProcess.getPid();
+        }
+        return -1;
     }
 
 

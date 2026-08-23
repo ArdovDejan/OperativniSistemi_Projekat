@@ -21,6 +21,8 @@ public class PCB {
 
     private List<OpenFileHandle> openFiles= new ArrayList<>();
 
+    private List<String> instructions = new ArrayList<>();
+
     public PCB(int pid, int priority, int burstTime) {
         this.pid = pid;
         this.priority = priority;
@@ -30,6 +32,16 @@ public class PCB {
         this.waitingTime = 0;
         this.registers = new HashMap<>();
         this.openFiles = new ArrayList<>();
+    }
+
+
+    public List<String> getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(List<String> instructions) {
+        this.instructions = instructions;
+        this.burstTime = instructions.size(); // burstTime = broj instrukcija
     }
 
     public IODevice getWaitingForDevice() {
