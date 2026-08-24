@@ -8,20 +8,20 @@ public class ReadyQueue {
         this.queue = new LinkedList<>();
     }
 
-    public void add(PCB p) {
+    public synchronized void add(PCB p) {
         p.setState(ProcessState.READY);
         queue.add(p);
     }
 
-    public PCB removeNext() {
+    public synchronized PCB removeNext() {
         return queue.poll();
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return queue.isEmpty();
     }
 
-    public Queue<PCB> getQueue() {
+    public synchronized Queue<PCB> getQueue() {
         return queue;
     }
 }

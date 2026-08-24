@@ -76,7 +76,7 @@ public class OSKarnel {
         this.runningQuantum = runningQuantum;
     }
 
-    public void createProcess(int priority, int burstTime){
+    public synchronized void createProcess(int priority, int burstTime){
      PCB  newProcess = new PCB(nextPid++,priority,burstTime);
 
      if(memoryManager.allocate(newProcess,64)){
@@ -90,7 +90,7 @@ public class OSKarnel {
 
     }
 
-    public int createProcess(int priority, List<String> instrukcije) {
+    public synchronized int createProcess(int priority, List<String> instrukcije) {
         PCB newProcess = new PCB(nextPid++, priority, instrukcije.size());
         newProcess.setInstructions(instrukcije);
 
@@ -105,7 +105,7 @@ public class OSKarnel {
     }
 
 
-    public void terminateProcess(int pid) {
+    public synchronized void terminateProcess(int pid) {
         for (PCB p : processTable) {
             if (p.getPid() == pid) {
                 p.setState(ProcessState.TERMINATED);
@@ -119,7 +119,7 @@ public class OSKarnel {
     }
 
 
-    public void unblockProcess(PCB p){
+    public synchronized void unblockProcess(PCB p){
      blockedQueue.unblock(p);
      readyQueue.add(p);
     System.out.println("[Karnel] Proces "+p.getPid()+" vracen u ReadyQueue.");
@@ -130,7 +130,7 @@ public class OSKarnel {
     }
 
 
-    public void timerTick(){
+    public synchronized void timerTick(){
      PCB current=cpu.getCurrent();
 
      if(current==null){
@@ -141,9 +141,14 @@ public class OSKarnel {
 
      cpu.executeOneStep();
      quantumCounter++;
-     System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
 
      if(current.getState()==ProcessState.TERMINATED){
+         if (current.getInstructions() != null && !current.getInstructions().isEmpty()) {
+             System.out.println("[CPU] Proces " + current.getPid() + " izvrsio HLT."); // zavrsio zbog HLT instrukcije
+         } else {
+             System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
+             // zavrsio kroz burstTime
+         }
          System.out.println("[Karnel] Proces " + current.getPid() + " je zavrsio rad.");
          memoryManager.free(current);
          processTable.remove(current);
@@ -153,7 +158,10 @@ public class OSKarnel {
          return;
      }
 
-     if (quantumCounter >= ((HRRNScheduler) scheduler).getTimeQuantum()){
+        System.out.println("[CPU] Proces " + current.getPid() + " izvrsava korak. PC: " + current.getProgramCounter() + ", Kvant: " + quantumCounter);
+
+
+        if (quantumCounter >= ((HRRNScheduler) scheduler).getTimeQuantum()){
          System.out.println("[Karnel] Proces " + current.getPid() + " je istekao kvant vrijeme");
          readyQueue.add(current);
          cpu.contextSwitch(null);
@@ -179,7 +187,7 @@ public class OSKarnel {
     }
 
 
-    public void syscall(Syscall request) {
+    public synchronized void syscall(Syscall request) {
      PCB current = cpu.getCurrent();
      if(current==null)
          return;
@@ -227,7 +235,7 @@ public class OSKarnel {
     }
 
 
-    public void handleIOCompletion(IODevice device) {
+    public synchronized void handleIOCompletion(IODevice device) {
         System.out.println("[Karnel] Uredjaj " + device.getName() + " zavrsio I/O operaciju.");
 
         List<PCB> procesi = blockedQueue.findByDevice(device);

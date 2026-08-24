@@ -8,17 +8,17 @@ public class BlockedQueue {
         this.list = new LinkedList<>();
     }
 
-    public void block(PCB p){
+    public synchronized void block(PCB p){
         p.setState(ProcessState.WAITING);
         list.add(p);
     }
 
-    public void unblock(PCB p){
+    public synchronized void unblock(PCB p){
         list.remove(p);
         p.setState(ProcessState.READY);
     }
 
-    public List<PCB> findByDevice(IODevice d){
+    public synchronized List<PCB> findByDevice(IODevice d){
         List<PCB> result = new LinkedList<>();
         for (PCB p : list) {
             if (p.getWaitingForDevice() == d) {

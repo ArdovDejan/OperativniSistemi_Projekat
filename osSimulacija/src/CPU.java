@@ -74,13 +74,15 @@ public class CPU {
             case "06": // STORE - spremi registar u memoriju
                 int adresa = Integer.parseInt(ascode[2], 16);
                 int regVrijednost = current.getRegisters().getOrDefault(ascode[1], 0);
-                memoryManager.write(current, adresa, regVrijednost);
-                System.out.println("[CPU] STORE: memorija[" + adresa + "] = " + regVrijednost);
+                int stvarnaAdresa = current.getBaseAddress() + adresa;
+                memoryManager.write(current, stvarnaAdresa, regVrijednost);
+                System.out.println("[CPU] STORE: memorija[" + stvarnaAdresa + "] = " + regVrijednost);
                 break;
 
             case "05": // LOAD - ucitaj iz memorije u registar
                 int loadAdresa = Integer.parseInt(ascode[2], 16);
-                int loadVrijednost = memoryManager.read(current, loadAdresa);
+                int stvarnaLoadAdresa = current.getBaseAddress() + loadAdresa;
+                int loadVrijednost = memoryManager.read(current, stvarnaLoadAdresa);
                 current.getRegisters().put(ascode[1], loadVrijednost);
                 System.out.println("[CPU] LOAD: R" + ascode[1] + " = " + loadVrijednost);
                 break;
