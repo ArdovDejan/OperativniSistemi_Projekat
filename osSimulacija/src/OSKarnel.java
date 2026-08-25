@@ -111,6 +111,12 @@ public class OSKarnel {
                 p.setState(ProcessState.TERMINATED);
                 memoryManager.free(p);
                 processTable.remove(p);
+                readyQueue.getQueue().remove(p);
+                blockedQueue.getList().remove(p);
+                if(cpu.getCurrent()==p){
+                    cpu.contextSwitch(null);
+                    quantumCounter=0;
+                }
                 System.out.println("[Karnel] Proces " + pid + " ugašen.");
                 return;
             }
