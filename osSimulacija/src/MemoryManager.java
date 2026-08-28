@@ -182,13 +182,46 @@ public boolean createSharedMemory(String key, int size){
     }
     System.err.println("[SharedMem] Nema dovoljno memorije za dijeljeni segment '" + key + "'");
     return false;
+
+
 }
 
 
+    public void writeShared(PCB p,String key,int offset, int value){
+        if(!sharedSizes.containsKey(key)){
+            System.err.println("Greska: Dijeljeni segment '" + key + "' ne postoji.");
+            return;
+
+        }
+    int base=sharedSegments.get(key);
+    int limit=sharedSizes.get(key);
+    if(offset >= 0 && offset < limit){
+        ram.getCells()[base+offset]=value;
+        System.out.println("[SharedMem] Proces "+ p.getPid() +" upisao "+value+" u "+key+"[adresa "+ (base + offset) + "]");
+
+    }else {
+        System.err.println("Segmentation Fault: Proces "+p.getPid()+" pokusava pisati izvan dijeljenog segmenta.");
+    }
+
+    }
 
 
+    public int readShared(PCB p, String key,int offset) {
+        if(!sharedSizes.containsKey(key)){
+        System.err.println("Greska: Dijeljeni segment '" + key + "' ne postoji.");
+        return -1;
+    }
+    int base=sharedSegments.get(key);
+    int limit=sharedSizes.get(key);
+        if(offset >= 0 && offset < limit){
+         int val=   ram.getCells()[base+offset];
+            System.out.println("[SharedMem] Proces "+p.getPid()+" procitao "+val+ " iz "+ key+ "[adresa "+(base+offset)+ "]");
+            return val;
 
 
-
-
+    }else{
+            System.err.println("Segmentation Fault: Proces "+p.getPid()+" prokusava citati izvan dijeljenog segmenta.");
+            return -1;
+        }
+    }
 }
