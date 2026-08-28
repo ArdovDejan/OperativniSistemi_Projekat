@@ -55,7 +55,7 @@ public class Shell {
             case "rm":
                 commandRm(info);
                 break;
-            
+
             default:
                 System.out.println("Nepoznata komanda: " + command);
                 break;

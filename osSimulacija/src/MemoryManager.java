@@ -11,6 +11,8 @@ public class MemoryManager {
     private List<MemorySegment> segments;
     private Map<Integer, List<Integer>> freeLists;
     private int totalRamSize;
+    private Map<String, Integer> sharedSegments= new HashMap<>();
+    private Map<String, Integer> sharedSizes= new HashMap<>();
 
 
     public MemoryManager(RAM ram) {
@@ -164,6 +166,28 @@ public void write(PCB p, int address,int value) {
 public String dumpMemory() {
     return "Zauzeti segmenti: "+segments.size() + ", Slobodni blokovi: " + freeLists.toString() ;
 }
+
+public boolean createSharedMemory(String key, int size){
+        if(sharedSizes.containsKey(key)){
+            System.out.println("[SharedMem] Segment sa kljucem "+key + " vec postoji. ");
+            return true;
+        }
+    int sizeToAllocate=nextPowerOfTwo(size);
+    int baseAdr=findFreeBlock(sizeToAllocate);
+    if (baseAdr != -1) {
+        sharedSegments.put(key, baseAdr);
+        sharedSizes.put(key, sizeToAllocate);
+        System.out.println("[SharedMem] Alociran dijeljeni segment '" + key + "' na adresi " + baseAdr+" (velicina: "+sizeToAllocate+")");
+        return true;
+    }
+    System.err.println("[SharedMem] Nema dovoljno memorije za dijeljeni segment '" + key + "'");
+    return false;
+}
+
+
+
+
+
 
 
 
