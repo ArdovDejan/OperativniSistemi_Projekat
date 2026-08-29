@@ -32,8 +32,12 @@ public class OSKarnel {
     this.ioMenager=new IOMenager(this);
 
     DiskDevice disk=new DiskDevice("HardDisk_0",this.ioMenager);
+    this.ioMenager.addDevice(disk);
     System.out.println("[Sistem] Disk uredjaj spreman.");
 
+    ConsoleDevice console=new ConsoleDevice("Console_0",this.ioMenager);
+    this.ioMenager.addDevice(console);
+    System.out.println("[Sistem] Console spreman.");
     this.fileSystem=new FileSystem(disk,512);
     System.out.println("[Sistem] File sistem montiran.");
 

@@ -15,7 +15,7 @@ public class Shell {
 
     public void start() {
         while (running) {
-            System.out.print("> ");
+            System.out.print(">> ");
             String input = scanner.nextLine().trim();
             if (!input.isEmpty()) {
                 executeCommand(input);

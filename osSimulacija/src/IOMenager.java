@@ -24,6 +24,7 @@ public class IOMenager {
         System.out.println("[IOMenager] Request "+p.getPid()+"trazi I/O na uredjaju  "+deviceName);
         for (IODevice device:devices){
             if(device.getName().equals(deviceName)){
+                p.setWaitingForDevice(device);
                 p.setState(ProcessState.WAITING);
                 device.startOperation(p,op);
                 return;
