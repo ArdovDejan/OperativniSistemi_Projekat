@@ -3,11 +3,11 @@ public static void main(String[] args) throws InterruptedException {
     os.setRunningQuantum(1000);
     os.boot();
 
-    os.createProcess(1, 20);
-    os.createProcess(1, 10);
-    os.createProcess(1, 3);
+    //os.createProcess(1, 20);
+    //os.createProcess(1, 10);
+    //os.createProcess(1, 3);
 
-    System.out.println("\n=== TEST: Asembler ===");
+    /**System.out.println("\n=== TEST: Asembler ===");
 
     Asembler asembler = new Asembler();
 
@@ -34,7 +34,7 @@ public static void main(String[] args) throws InterruptedException {
     for (PCB p : kopija) {
         System.out.println(p);
     }
-
+    */
     Shell shell = new Shell(os);
     shell.start();
 }

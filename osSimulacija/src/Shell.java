@@ -59,6 +59,9 @@ public class Shell {
             case "touch":
                 commandTouch(info);
                 break;
+            case "autowrite":
+                commandAutoWrite(info);
+                break;
             case "write":
                 commandWrite(info);
                 break;
@@ -188,7 +191,7 @@ public class Shell {
         osKarnel.getFileSystem().createFile(currentPath,info[1]);
     }
 
-    private void commandWrite(String[] info){
+    private void commandAutoWrite(String[] info){
         if(info.length < 2){
             System.out.println("Upotreba: write <naziv_fajla>");
             return;
@@ -207,6 +210,34 @@ public class Shell {
             System.out.println("[SilrSystem] U fajl '" + info[1] + "' upisam asemblerski kod. ");
 
         }
+    }
+
+    private void commandWrite(String[] info){
+        if(info.length < 2){
+            System.out.println("Upotreba: write <naziv_fajla>");
+            return;
+
+        }
+        String targetPath;
+        if(currentPath.equals("/")){
+            targetPath = "/"+info[1];
+        }else{
+            targetPath=currentPath+"/"+info[1];
+        }
+        OpenFileHandle handle=osKarnel.getFileSystem().openFile(targetPath);
+
+        if (handle == null) return;
+        System.out.println("Unesi ASM kod (zavrsi sa 'END'):");
+        StringBuilder kod = new StringBuilder();
+
+        while (true) {
+            String linija = scanner.nextLine().trim();
+            if (linija.equalsIgnoreCase("END")) break;
+            kod.append(linija).append("\n");
+        }
+
+        handle.write(kod.toString());
+        System.out.println("Kod upisan u fajl: " + info[1]);
 
 
     }
