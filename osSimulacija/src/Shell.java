@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class Shell {
@@ -54,6 +55,15 @@ public class Shell {
                 break;
             case "rm":
                 commandRm(info);
+                break;
+            case "touch":
+                commandTouch(info);
+                break;
+            case "write":
+                commandWrite(info);
+                break;
+            case "exec":
+                commandExec(info);
                 break;
 
             default:
@@ -168,5 +178,71 @@ public class Shell {
             System.out.println("Greska: pid mora biti broj.");
         }
     }
+
+    private void commandTouch(String[] info){
+        if(info.length < 2){
+            System.out.println("Upotreba: touch <naziv_fajla>");
+            return;
+
+        }
+        osKarnel.getFileSystem().createFile(currentPath,info[1]);
+    }
+
+    private void commandWrite(String[] info){
+        if(info.length < 2){
+            System.out.println("Upotreba: write <naziv_fajla>");
+            return;
+
+        }
+        String targetPath;
+        if(currentPath.equals("/")){
+            targetPath = "/"+info[1];
+        }else{
+            targetPath=currentPath+"/"+info[1];
+        }
+        OpenFileHandle handle=osKarnel.getFileSystem().openFile(targetPath);
+        if(handle != null){
+            String asmKod="MOV R1, 5\nMOV R2, 3\nADD R1, R2\nSTORE R1, 10\nHLT";
+            handle.write(asmKod);
+            System.out.println("[SilrSystem] U fajl '" + info[1] + "' upisam asemblerski kod. ");
+
+        }
+
+
+    }
+
+    private void commandExec(String[] info){
+        if(info.length < 2){
+            System.out.println("Upotreba: exec <naziv_fajla>");
+            return;
+        }
+        String targetPath;
+        if(currentPath.equals("/")){
+            targetPath = "/"+info[1];
+        }else {
+            targetPath=currentPath+"/"+info[1];
+        }
+
+        OpenFileHandle handle=osKarnel.getFileSystem().openFile(targetPath);
+        if(handle == null) return;
+
+        String asmKod= handle.read(1000);
+        Asembler asembler=new Asembler();
+        List<String> masinskiKod=asembler.compile(asmKod);
+
+        int pid=osKarnel.createProcess(1,masinskiKod);
+        if(pid!=-1){
+            System.out.println("[Sistem] Program iz fajla uspjesno pokrenut pod PID: "+pid);
+        }
+
+
+
+
+
+
+
+
+    }
+
 
 }
